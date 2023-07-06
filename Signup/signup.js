@@ -15,11 +15,13 @@ async function signUp(event) {
     event.preventDefault();
     const username = event.target.username.value;
     const email = event.target.email.value;
+    const phone = event.target.phone.value;
     const password = event.target.password.value;
 
     const obj = {
       username,
       email,
+      phone,
       password,
     };
 
