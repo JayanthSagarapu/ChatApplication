@@ -21,7 +21,7 @@ const User = sequelize.define("user", {
   },
 
   phone: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
     unique: true,
     allowNull: false,
   },

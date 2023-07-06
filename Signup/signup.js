@@ -25,8 +25,11 @@ async function signUp(event) {
       password,
     };
 
-    if (username && email && password) {
-      const response = await axios.post("localhost:3000/user/signup", obj);
+    if (username && email && phone && password) {
+      const response = await axios.post(
+        "http://localhost:3000/user/signup",
+        obj
+      );
       console.log(response);
       if (response.status === 200) {
         window.location.href = "../Login/login.html";
@@ -37,53 +40,5 @@ async function signUp(event) {
     errormsg.class =
       "bi bi-exclamation-triangle text-danger mt-3 w-50 p-3 ml-3";
     console.log(err);
-  }
-}
-
-async function login(event) {
-  try {
-    event.preventDefault();
-
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-
-    const obj = {
-      email,
-      password,
-    };
-
-    if (email && password) {
-      const response = await axios.post("localhost:3000/user/login", obj);
-      console.log(response);
-      localStorage.setItem("token", response.data.token);
-      window.location.href = "../Expense/expense.html";
-      // event.target.reset();
-    }
-  } catch (err) {
-    errormsg.innerText = `Error : Something went wrong. SignUP if New User`;
-    errormsg.class =
-      "bi bi-exclamation-triangle text-danger mt-3 w-50 p-3 ml-3";
-    console.log(err);
-  }
-}
-
-async function forgetPassword(event) {
-  try {
-    event.preventDefault();
-    const email = event.target.email.value;
-
-    if (email) {
-      const response = await axios.post(
-        "localhost:3000/password/forgotpassword",
-        {
-          email: email,
-        }
-      );
-      window.location.href = "../views/Login/login.html";
-      event.target.reset();
-      console.log(response);
-    }
-  } catch (error) {
-    console.log(error);
   }
 }

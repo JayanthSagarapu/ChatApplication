@@ -1,9 +1,8 @@
-const { has } = require("lodash");
 const User = require("../models/UserDb");
 const sequelize = require("../util/database");
 const bcrypt = require("bcrypt");
 
-const addUser = async (req, res) => {
+const signUp = async (req, res) => {
   try {
     const { username, email, phone, password } = req.body;
 
@@ -25,5 +24,5 @@ const addUser = async (req, res) => {
 };
 
 module.exports = {
-  addUser,
+  signUp,
 };
