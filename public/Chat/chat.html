@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+      crossorigin="anonymous"
+    />
+    <title>Chatapp</title>
+    <style>
+      body {
+        background-image: url("https://telegram.org/file/464001326/1/eHuBKzF9Lh4.288899/1f135a074a169f90e5");
+
+        /* background-color: rgb(5, 17, 34); */
+      }
+
+      header {
+        /* background-color: rgb(47, 62, 82); */
+        height: 12%;
+        text-align: center;
+        padding: 17px;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        /* justify-content: space-between; */
+        min-height: auto;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .message-container {
+        margin-bottom: 200px;
+      }
+
+      .message {
+        background-color: rgb(201, 217, 236);
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 2px;
+        font-weight: 500;
+      }
+
+      .input-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .input-field {
+        flex: 1;
+        margin-right: 10px;
+        padding: 10px;
+        height: 35px;
+        background-color: rgb(201, 217, 236);
+        border-radius: 5px;
+      }
+
+      .send-button {
+        background-color: #4caf50;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1
+        style="
+          text-align: center;
+          font-weight: 700;
+          color: rgb(201, 217, 236);
+          font-size: 4rem;
+        "
+        class="ml-3"
+      >
+        Chat App
+      </h1>
+    </header>
+
+    <div class="container">
+      <div class="message-container">
+        <div class="message">Hello, how are you?</div>
+        <div class="message">I'm good, thanks!</div>
+        <div class="message">What about you?</div>
+      </div>
+      <div class="input-container">
+        <input
+          class="input-field"
+          type="text"
+          placeholder="Type your message"
+        />
+        <button class="send-button">Send</button>
+      </div>
+    </div>
+    <script src="../chat/chat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+  </body>
+</html>
