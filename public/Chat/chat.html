@@ -28,15 +28,10 @@
       .container {
         display: flex;
         flex-direction: column;
-        /* justify-content: space-between; */
         min-height: auto;
         max-width: 600px;
         margin: 0 auto;
         padding: 20px;
-      }
-
-      .message-container {
-        margin-bottom: 200px;
       }
 
       .message {
@@ -87,18 +82,19 @@
     </header>
 
     <div class="container">
-      <div class="message-container">
-        <div class="message">Hello, how are you?</div>
-        <div class="message">I'm good, thanks!</div>
-        <div class="message">What about you?</div>
-      </div>
+      <div
+        class="message-container"
+        id="message-container"
+        style="margin-bottom: 200px"
+      ></div>
       <div class="input-container">
         <input
+          id="message-field"
           class="input-field"
           type="text"
           placeholder="Type your message"
         />
-        <button class="send-button">Send</button>
+        <button onclick="sendMessage()" class="send-button">Send</button>
       </div>
     </div>
     <script src="../chat/chat.js"></script>
