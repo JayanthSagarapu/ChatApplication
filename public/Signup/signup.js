@@ -32,7 +32,7 @@ async function signUp(event) {
       );
       console.log(response);
       if (response.status === 200) {
-        // window.location.href = "../Login/login.html";
+        window.location.href = "../Login/login.html";
       }
     }
   } catch (err) {

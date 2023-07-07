@@ -29,7 +29,7 @@ async function login(event) {
       );
       console.log(response);
       localStorage.setItem("token", response.data.token);
-      window.location.href = "../Expense/expense.html";
+      //   window.location.href = "../Expense/expense.html";
       // event.target.reset();
     }
   } catch (err) {
