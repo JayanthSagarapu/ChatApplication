@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+      crossorigin="anonymous"
+    />
+    <title>SignUp</title>
+    <style>
+        body{
+            background-image: url('https://previews.123rf.com/images/vectorfusionart/vectorfusionart1712/vectorfusionart171200714/91436795-digital-composite-of-chat-bubble-app-icons-connected-and-dark-background.jpg');
+        }
+
+        #loginform{
+            background-color: rgb(5, 23, 50);
+        }
+    </style>
+
+  </head>
+  <body>
+    <header class="header text-white p-3 d-flex flex-row mb-4">
+        <h1 class="headertext ml-5 w-75"
+          style="text-decoration: none; color:  rgb(206, 213, 229); font-weight: 700; font-size: 4rem; padding-left: 38%;"
+          >Chat App</h1>
+        
+      </h1>
+  
+      <ul class="nav ml-auto mr-5 mt-3 ">
+        <li class="mr-2">
+          Create Account
+          <button id="sign" class="text-white" style="cursor: pointer;background-color: rgb(80, 80, 217); width: 70px;">SignUp</button>
+        </li>
+        <li>
+          <button id="login" class="active text-white" style="cursor: pointer;background-color: rgb(80, 80, 217) ;width: 70px;">
+            Login
+          </button>
+        </li>
+      </ul>
+    </header>
+
+    <div id="loginform" class="card card-body m-auto w-25 align-items-center">
+      <form
+        action="#"
+        method="post"
+        onsubmit="login(event)"
+        class="d-flex flex-column w-75 text-white"
+      >
+        Email:<input
+          type="text"
+          id="email"
+          placeholder="Email"
+          required
+        /><br />
+        Password:<input
+          type="password"
+          id="password"
+          placeholder="password"
+          required
+        /><br />
+        <button
+          value="Login"
+          class="text-white"
+          style="cursor: pointer;background-color: rgb(80, 80, 217)"
+        >
+          Login
+        </button>
+        <a href="../Forgetpassword/forgotPassword.html" style="color: red; font-size:medium;font-weight: 500; " >Forgot Password</a> 
+        <h6 class="mt-3">New User?
+          <a href="../Signup/signup.html" style="color: red;" id="forgotPassword">SignUp</a><h6>
+      </form>
+    </div>
+    <div id="error" class="text-danger mt-3 w-50 p-3 ml-3"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script src="../Login/login.js"></script>
+  </body>
+</html>
