@@ -28,10 +28,17 @@
       .container {
         display: flex;
         flex-direction: column;
-        min-height: auto;
-        max-width: 600px;
+        height: 30rem;
+        max-width: 800px;
         margin: 0 auto;
         padding: 20px;
+        /* background-color: rgb(4, 23, 44); */
+        overflow: scroll;
+        overflow-x: hidden;
+      }
+
+      ::-webkit-scrollbar {
+        width: 0;
       }
 
       .message {
@@ -45,6 +52,10 @@
       .input-container {
         display: flex;
         align-items: center;
+        position: fixed;
+        margin-top: 15px;
+        margin-left: 25%;
+        width: 50%;
       }
 
       .input-field {
@@ -52,7 +63,8 @@
         margin-right: 10px;
         padding: 10px;
         height: 35px;
-        background-color: rgb(201, 217, 236);
+        width: 35rem;
+        background-color: white;
         border-radius: 5px;
       }
 
@@ -85,17 +97,17 @@
       <div
         class="message-container"
         id="message-container"
-        style="margin-bottom: 200px"
+        style="height: 100%; overflow-y: scroll"
       ></div>
-      <div class="input-container">
-        <input
-          id="message-field"
-          class="input-field"
-          type="text"
-          placeholder="Type your message"
-        />
-        <button onclick="sendMessage()" class="send-button">Send</button>
-      </div>
+    </div>
+    <div class="input-container">
+      <input
+        id="message-field"
+        class="input-field"
+        type="text"
+        placeholder="Type your message"
+      />
+      <button onclick="sendMessage()" class="send-button">Send</button>
     </div>
     <script src="../chat/chat.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>

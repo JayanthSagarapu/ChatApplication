@@ -13,6 +13,7 @@ async function sendMessage() {
       { headers: { Authorization: token } }
     );
     showMessageOnScreen(response.data);
+    document.getElementById("message-field").value = "";
     console.log(response.data);
   } catch (err) {
     console.log(err);

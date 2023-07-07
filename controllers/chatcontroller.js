@@ -15,7 +15,7 @@ const sendMessage = async (req, res) => {
     );
     res
       .status(200)
-      .json({ success: true, username: req.user.username, message: message });
+      .json({ success: true, userId: req.user.id, message: message });
     await t.commit();
   } catch (err) {
     console.log(err);
