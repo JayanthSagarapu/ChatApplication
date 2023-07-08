@@ -6,16 +6,18 @@ const sendMessage = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const { message } = req.body;
-    await Chat.create(
+    const chatDetails = await Chat.create(
       {
         message,
         userId: req.user.id,
+        username: req.user.username,
       },
       { transaction: t }
     );
-    res
-      .status(200)
-      .json({ success: true, userId: req.user.id, message: message });
+    res.status(200).json({
+      success: true,
+      chatDetails,
+    });
     await t.commit();
   } catch (err) {
     console.log(err);
@@ -26,8 +28,8 @@ const sendMessage = async (req, res) => {
 
 const getMessages = async (req, res) => {
   try {
-    const chat = await Chat.findAll({ where: { userId: req.user.id } });
-    res.status(200).json({ message: chat });
+    const chat = await Chat.findAll({});
+    res.status(200).json({ chat });
   } catch (err) {
     console.log(err);
     return res.status(500).json("something went wrong");
