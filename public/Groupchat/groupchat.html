@@ -93,23 +93,27 @@
         Chat App
       </h1>
     </header>
-    <div style="height: 30px">
-      <button
-        onclick="showcreateGroup()"
-        type="button"
-        id="creategroup-btn"
-        style="
-          margin-left: 85%;
-          background: #4caf50;
-          padding: 8px;
-          color: white;
-          border-radius: 5px;
-          cursor: pointer;
-        "
-      >
-        Create Group
-      </button>
-    </div>
+
+    <h4
+      style="color: gold; text-align: center; height: 0px"
+      id="groupname"
+    ></h4>
+
+    <button
+      onclick="addfriend()"
+      type="button"
+      style="
+        width: 15%;
+        margin-left: 75%;
+        background: #4caf50;
+        padding: 8px;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+      "
+    >
+      Add friend
+    </button>
 
     <div class="container d-flex flex-row" id="container">
       <div
@@ -154,34 +158,11 @@
         "
       ></div>
       <div
-        class="creategroup-container"
+        class="creategroup-container bg-white"
         id="creategroup-container"
         style="width: 20%; margin-left: 5%; padding: 5px; display: none"
+      ></div>
       >
-        <!-- <div class="creategroup">
-        <h1 class="text-center text-white">Create A Group On Here!</h1>
-  
-        <form class="needs-validation" onsubmit="creategroup(event)">
-          <div class="form-group was-validated">
-            <lable class="form-lable" for="groupname">Group Name</label>
-            <input class="form-control" type="text" id="groupname" required />
-            <div class="invalid-feedback">
-              Please enter your group Name
-  
-            </div>
-          </div>
-          <input
-            onclick="creategroup(event)"
-            id="creategroup-btn2"
-            class="btn btn-success w-100"
-            type="button"
-            value="Create group"
-          />
-  
-          
-        </form>
-      </div> -->
-      </div>
     </div>
     <div class="input-container">
       <input
@@ -192,7 +173,7 @@
       />
       <button onclick="sendMessage()" class="send-button">Send</button>
     </div>
-    <script src="../chat/chat.js"></script>
+    <script src="../Groupchat/groupchat.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
   </body>
 </html>

@@ -13,4 +13,10 @@ router.post(
 
 router.get("/getmessages", middleware.authenticate, chatController.getMessages);
 
+router.get(
+  "/showall-groups",
+  middleware.authenticate,
+  chatController.showallGroups
+);
+
 module.exports = router;

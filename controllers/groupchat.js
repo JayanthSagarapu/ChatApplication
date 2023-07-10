@@ -1,20 +1,20 @@
 const Chat = require("../models/Chat");
 const User = require("../models/UserDb");
 const Usergroup = require("../models/usergroup");
+const Group = require("../models/group");
 const sequelize = require("../util/database");
 
 const sendMessage = async (req, res) => {
   const t = await sequelize.transaction();
   try {
-    const { message } = req.body;
-    const chatDetails = await Chat.create(
-      {
-        message,
-        userId: req.user.id,
-        username: req.user.username,
-      },
-      { transaction: t }
-    );
+    const { message, groupname } = req.body;
+    const group = await Group.findOne({ groupname });
+    const chatDetails = await Chat.create({
+      message,
+      userId: req.user.id,
+      username: req.user.username,
+      groupId: group.id,
+    });
     res.status(200).json({
       success: true,
       chatDetails,
@@ -29,7 +29,9 @@ const sendMessage = async (req, res) => {
 
 const getMessages = async (req, res) => {
   try {
-    const chat = await Chat.findAll({});
+    const groupname = req.params.groupname;
+    const group = await Group.findOne({ where: { groupname } });
+    const chat = await Chat.findAll({ where: { groupId: group.id } });
     res.status(200).json({ chat });
   } catch (err) {
     console.log(err);

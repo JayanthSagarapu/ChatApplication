@@ -2,13 +2,15 @@ async function sendMessage() {
   try {
     const token = localStorage.getItem("token");
     const message = document.getElementById("message-field").value;
+    const groupname = localStorage.getItem("groupname");
 
     const obj = {
       message,
+      groupname,
     };
 
     const response = await axios.post(
-      "http://localhost:3000/chat/sendmessage",
+      "http://localhost:3000/groupchat/sendmessage",
       obj,
       { headers: { Authorization: token } }
     );
@@ -46,7 +48,7 @@ addEventListener("DOMContentLoaded", async () => {
     const dropdown = document.getElementById("groups");
 
     const groups = await axios.get(
-      "http://localhost:3000/chat/showall-groups",
+      "http://localhost:3000/groupchat/showall-groups",
       {
         headers: { Authorization: token },
       }
@@ -59,9 +61,17 @@ addEventListener("DOMContentLoaded", async () => {
       dropdown.appendChild(option);
     });
 
-    const response = await axios.get("http://localhost:3000/chat/getmessages", {
-      headers: { Authorization: token },
-    });
+    let headingh4 = document.getElementById("groupname");
+    const groupname = localStorage.getItem("groupname");
+    headingh4.innerHTML = `Group Name : ${groupname}`;
+
+    const response = await axios.get(
+      `http://localhost:3000/groupchat/getmessages/${groupname}`,
+      {
+        headers: { Authorization: token },
+      },
+      groupname
+    );
 
     console.log(response.data.chat);
 
@@ -106,10 +116,8 @@ function showMessageOnScreen(response) {
   messageContainer.append(showMessage);
 }
 
-function showcreateGroup() {
-  window.location.href = "../Creategroup/creategroup.html";
-  // document.getElementById("creategroup-container").style.display = "block";
-  // document.getElementById("creategroup-btn").style.display = "none";
+function addfriend() {
+  window.location.href = "../Addfriend/addfriend.html";
 }
 
 function usergroups() {
@@ -118,31 +126,3 @@ function usergroups() {
 
   window.location.href = "../Groupchat/groupchat.html";
 }
-
-// async function creategroup(e) {
-//   try {
-//     e.preventDefault(e);
-
-//     const token = localStorage.getItem("token");
-//     const groupname = document.getElementById("groupname").value;
-
-//     const obj = {
-//       groupname,
-//     };
-
-//     const response = await axios.post(
-//       "http://localhost:3000/group/creategroup",
-//       obj,
-//       { headers: { Authorization: token } }
-//     );
-
-//     localStorage.setItem("groupname", response.data.creategroup.groupname);
-
-//     document.getElementById("creategroup-btn").style.display = "block";
-//     document.getElementById("creategroup-container").style.display = "none";
-
-//     window.location.href = "../Groupchat/groupchat.html";
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }

@@ -1,0 +1,104 @@
+<<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+      crossorigin="anonymous"
+    />
+    <title>Create Group</title>
+
+    <style>
+      body {
+        background-image: url("https://telegram.org/file/464001326/1/eHuBKzF9Lh4.288899/1f135a074a169f90e5");
+
+        /* background-color: rgb(5, 17, 34); */
+      }
+
+      header {
+        /* background-color: rgb(47, 62, 82); */
+        height: 12%;
+        text-align: center;
+        padding: 17px;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        height: 30rem;
+        max-width: 100rem;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+
+      .creategroup {
+        width: 30%;
+        height: 100%;
+        padding: 20px;
+        border-radius: 12px;
+        margin: auto;
+        padding: 50px;
+        
+      }
+
+      .creategroup h1 {
+        font-size: 36px;
+        margin-bottom: 25px;
+        padding: 15px;
+        color: white;
+      }
+
+      .creategroup form {
+        font-size: 15px;
+      }
+
+      .creategroup form input[type="submit"] {
+        font-size: 20px;
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+        <h1
+          style="
+            text-align: center;
+            font-weight: 700;
+            color: rgb(201, 217, 236);
+            font-size: 4rem;
+          "
+          class="ml-3"
+        >
+          Chat App
+        </h1>
+      </header>
+    <div class="container" >
+        <div class="creategroup">
+      <h1 class="text-center">Create A Group On Here!</h1>
+
+      <form class="needs-validation" onsubmit="creategroup(event)">
+        <div class="form-group was-validated">
+          <lable class="form-lable" for="groupname">Group Name</lable>
+          <input class="form-control" type="text" id="groupname" required />
+          <div class="invalid-feedback">
+            Please enter your group Name
+
+          </div>
+        </div>
+        <input
+          class="btn btn-success w-100"
+          type="submit"
+          value="Create group"
+        />
+      </form>
+    </div>
+
+    <script src="../Creategroup/creategroup.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+  </body>
+</html>
