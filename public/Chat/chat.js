@@ -1,5 +1,6 @@
-async function sendMessage() {
+async function sendMessage(e) {
   try {
+    e.preventDefault();
     const token = localStorage.getItem("token");
     const message = document.getElementById("message-field").value;
 
@@ -12,9 +13,9 @@ async function sendMessage() {
       obj,
       { headers: { Authorization: token } }
     );
-    response.data.chatDetails.username = "you";
     console.log(response.data.chatDetails);
 
+    response.data.chatDetails.username = "you";
     showMessageOnScreen(response.data.chatDetails);
     document.getElementById("message-field").value = "";
   } catch (err) {

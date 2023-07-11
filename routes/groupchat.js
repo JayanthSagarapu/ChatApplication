@@ -14,4 +14,14 @@ router.get(
 
 router.get("/showall-groups", middleware.authenticate, Groupchat.showallGroups);
 
+router.get(
+  "/friends/:groupname",
+  middleware.authenticate,
+  Groupchat.showfriends
+);
+
+router.delete("/deletefriend/:friendname/:groupname", Groupchat.removefriend);
+
+router.post("/adminfriend", Groupchat.adminfriend);
+
 module.exports = router;

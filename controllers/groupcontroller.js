@@ -13,7 +13,7 @@ const createGroup = async (req, res) => {
         groupname,
         name: req.user.username,
         isAdmin: true,
-        groupId: createGroup.id,
+        groupId: creategroup.id,
         userId: req.user.id,
       },
       { transaction: t }

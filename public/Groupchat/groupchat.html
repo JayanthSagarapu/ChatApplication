@@ -28,7 +28,7 @@
       .container {
         display: flex;
         flex-direction: column;
-        height: 30rem;
+        height: 28rem;
         max-width: 100rem;
         margin: 0 auto;
         padding: 20px;
@@ -94,10 +94,17 @@
       </h1>
     </header>
 
-    <h4
-      style="color: gold; text-align: center; height: 0px"
-      id="groupname"
-    ></h4>
+    <button
+      onclick="showFriends()"
+      style="
+        cursor: pointer;
+        height: 40px;
+        background-color: transparent;
+        margin-left: 42%;
+      "
+    >
+      <h4 style="color: gold; text-decoration: none" id="groupname"></h4>
+    </button>
 
     <button
       onclick="addfriend()"
@@ -111,6 +118,7 @@
         border-radius: 5px;
         cursor: pointer;
       "
+      id="addfriendBtn"
     >
       Add friend
     </button>
@@ -132,6 +140,7 @@
           >
             <option value="Select Group">Select Group</option>
           </select>
+
           <button
             onclick="usergroups()"
             style="
@@ -158,11 +167,26 @@
         "
       ></div>
       <div
-        class="creategroup-container bg-white"
-        id="creategroup-container"
-        style="width: 20%; margin-left: 5%; padding: 5px; display: none"
-      ></div>
+        class="friends-container"
+        id="friends-container"
+        style="
+          width: 20%;
+          margin-left: 5%;
+          padding: 5px;
+          background-color: rgb(16, 34, 51);
+          display: none;
+        "
       >
+        <ul
+          id="friends-list"
+          style="
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            overflow: scroll;
+          "
+        ></ul>
+      </div>
     </div>
     <div class="input-container">
       <input
@@ -171,7 +195,7 @@
         type="text"
         placeholder="Type your message"
       />
-      <button onclick="sendMessage()" class="send-button">Send</button>
+      <button onclick="sendMessage(event)" class="send-button">Send</button>
     </div>
     <script src="../Groupchat/groupchat.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>

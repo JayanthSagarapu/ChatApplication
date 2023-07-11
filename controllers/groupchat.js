@@ -8,7 +8,7 @@ const sendMessage = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const { message, groupname } = req.body;
-    const group = await Group.findOne({ groupname });
+    const group = await Group.findOne({ where: { groupname } });
     const chatDetails = await Chat.create({
       message,
       userId: req.user.id,
@@ -32,7 +32,10 @@ const getMessages = async (req, res) => {
     const groupname = req.params.groupname;
     const group = await Group.findOne({ where: { groupname } });
     const chat = await Chat.findAll({ where: { groupId: group.id } });
-    res.status(200).json({ chat });
+    const usergroup = await Usergroup.findAll({
+      where: { userId: req.user.id, groupId: group.id },
+    });
+    res.status(200).json({ chat, usergroup });
   } catch (err) {
     console.log(err);
     return res.status(500).json("something went wrong");
@@ -42,6 +45,7 @@ const getMessages = async (req, res) => {
 const showallGroups = async (req, res) => {
   try {
     const groups = await Usergroup.findAll({ where: { userId: req.user.id } });
+
     res.status(201).json({ groups, success: true });
   } catch (err) {
     console.log(err);
@@ -49,8 +53,64 @@ const showallGroups = async (req, res) => {
   }
 };
 
+const showfriends = async (req, res) => {
+  try {
+    const groupname = req.params.groupname;
+    const group = await Group.findOne({ where: { groupname } });
+    const usergroup = await Usergroup.findAll({
+      where: { userId: req.user.id, groupId: group.id },
+    });
+
+    const friends = await Usergroup.findAll({ where: { groupId: group.id } });
+    res.status(201).json({ friends, usergroup, success: true });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: err });
+  }
+};
+
+const removefriend = async (req, res) => {
+  try {
+    const { friendId, groupname } = req.params;
+    const group = await Group.findOne({ where: { groupname } });
+    const friend = await Usergroup.findOne({
+      where: { groupId: group.id, userId: friendId },
+    });
+
+    if (friend) {
+      await friend.destroy();
+      res.status(200).json({
+        message: "Successfully deleted friend",
+      });
+    }
+  } catch (err) {
+    res.status(500).json({ message: "Delete friend problem" });
+  }
+};
+
+const adminfriend = async (req, res) => {
+  try {
+    const { friendId, groupname } = req.body;
+    const group = await Group.findOne({ where: { groupname } });
+
+    const admin = await Usergroup.update(
+      { isAdmin: true },
+      { where: { userId: friendId, groupId: group.id } }
+    );
+
+    res.status(200).json({
+      message: `${admin.name} is Successfully made admin`,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "admin friend problem" });
+  }
+};
+
 module.exports = {
   sendMessage,
   getMessages,
   showallGroups,
+  showfriends,
+  removefriend,
+  adminfriend,
 };
