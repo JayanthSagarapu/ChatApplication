@@ -42,74 +42,75 @@ function parseJwt(token) {
 }
 
 addEventListener("DOMContentLoaded", async () => {
-  try {
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+
+  const dropdown = document.getElementById("groups");
+  const groups = await axios.get(
+    "http://localhost:3000/groupchat/showall-groups",
+    {
+      headers: { Authorization: token },
+    }
+  );
+
+  groups.data.groups.forEach((group) => {
+    const option = document.createElement("option");
+    option.value = group.groupname;
+    option.textContent = group.groupname;
+    dropdown.appendChild(option);
+  });
+
+  let headingh4a = document.getElementById("groupname");
+  const groupname = localStorage.getItem("groupname");
+  headingh4a.innerHTML = `Group Name : ${groupname}`;
+
+  setInterval(async () => {
     const decodeJwt = parseJwt(token);
     console.log("decodeJwt", decodeJwt);
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/groupchat/getmessages/${groupname}`,
+        {
+          headers: { Authorization: token },
+        },
+        groupname
+      );
 
-    const dropdown = document.getElementById("groups");
+      console.log(response.data);
 
-    const groups = await axios.get(
-      "http://localhost:3000/groupchat/showall-groups",
-      {
-        headers: { Authorization: token },
+      if (response.data.usergroup[0].isAdmin === false) {
+        document.getElementById("addfriendBtn").style.visibility = "hidden";
       }
-    );
 
-    groups.data.groups.forEach((group) => {
-      const option = document.createElement("option");
-      option.value = group.groupname;
-      option.textContent = group.groupname;
-      dropdown.appendChild(option);
-    });
+      let array = [];
 
-    let headingh4a = document.getElementById("groupname");
-    const groupname = localStorage.getItem("groupname");
-    headingh4a.innerHTML = `Group Name : ${groupname}`;
+      if (response.data.chat.length > 10) {
+        let n = response.data.chat.length - 1;
 
-    const response = await axios.get(
-      `http://localhost:3000/groupchat/getmessages/${groupname}`,
-      {
-        headers: { Authorization: token },
-      },
-      groupname
-    );
+        while (array.length < 10) {
+          array.push(response.data.chat[n]);
+          n--;
+        }
+      } else {
+        array = response.data.chat.reverse();
+      }
 
-    console.log(response.data);
+      array = array.reverse();
 
-    if (response.data.usergroup[0].isAdmin === false) {
-      document.getElementById("addfriendBtn").style.visibility = "hidden";
+      localStorage.setItem("oldmsgsArray", JSON.stringify(array));
+
+      let chat = JSON.parse(localStorage.getItem("oldmsgsArray"));
+      // document.getElementById("message-container").innerText = " ";
+
+      chat.forEach((ele) => {
+        if (ele.userid === decodeJwt.userid) {
+          ele.username = "you";
+        }
+        showMessageOnScreen(ele);
+      });
+    } catch (err) {
+      console.log(err);
     }
-
-    let array = [];
-
-    if (response.data.chat.length > 10) {
-      let n = response.data.chat.length - 1;
-
-      while (array.length < 10) {
-        array.push(response.data.chat[n]);
-        n--;
-      }
-    } else {
-      array = response.data.chat.reverse();
-    }
-
-    array = array.reverse();
-
-    localStorage.setItem("oldmsgsArray", JSON.stringify(array));
-
-    let chat = JSON.parse(localStorage.getItem("oldmsgsArray"));
-    // document.getElementById("message-container").innerText = " ";
-
-    chat.forEach((ele) => {
-      if (ele.userid === decodeJwt.userid) {
-        ele.username = "you";
-      }
-      showMessageOnScreen(ele);
-    });
-  } catch (err) {
-    console.log(err);
-  }
+  }, 1000);
 });
 
 function showMessageOnScreen(response) {

@@ -23,11 +23,11 @@ const createGroup = async (req, res) => {
       success: true,
       message: "group successfully created",
     });
-    t.commit();
+    await t.commit();
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err });
-    t.rollback();
+    await t.rollback();
   }
 };
 
@@ -37,21 +37,24 @@ const addFriend = async (req, res) => {
     const { email, groupname } = req.body;
     const member = await User.findOne({ where: { email } });
     const group = await Group.findOne({ where: { groupname } });
-    const usergroup = await Usergroup.create({
-      groupname,
-      name: member.username,
-      groupId: group.id,
-      userId: member.id,
-    });
+    const usergroup = await Usergroup.create(
+      {
+        groupname,
+        name: member.username,
+        groupId: group.id,
+        userId: member.id,
+      },
+      { transaction: t }
+    );
 
     res.status(201).json({
       success: true,
       message: "member added onto this group successfully",
     });
-    t.commit();
+    await t.commit();
   } catch (err) {
     console.log(err);
-    t.rollback();
+    await t.rollback();
     res.status(500).json({ error: err });
   }
 };

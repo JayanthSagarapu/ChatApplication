@@ -9,12 +9,15 @@ const sendMessage = async (req, res) => {
   try {
     const { message, groupname } = req.body;
     const group = await Group.findOne({ where: { groupname } });
-    const chatDetails = await Chat.create({
-      message,
-      userId: req.user.id,
-      username: req.user.username,
-      groupId: group.id,
-    });
+    const chatDetails = await Chat.create(
+      {
+        message,
+        userId: req.user.id,
+        username: req.user.username,
+        groupId: group.id,
+      },
+      { transaction: t }
+    );
     res.status(200).json({
       success: true,
       chatDetails,
@@ -70,6 +73,7 @@ const showfriends = async (req, res) => {
 };
 
 const removefriend = async (req, res) => {
+  const t = await sequelize.transaction();
   try {
     const { friendId, groupname } = req.params;
     const group = await Group.findOne({ where: { groupname } });
@@ -79,30 +83,36 @@ const removefriend = async (req, res) => {
 
     if (friend) {
       await friend.destroy();
+      await t.commit();
       res.status(200).json({
         message: "Successfully deleted friend",
       });
     }
   } catch (err) {
     res.status(500).json({ message: "Delete friend problem" });
+    await t.rollback();
   }
 };
 
 const adminfriend = async (req, res) => {
+  const t = await sequelize.transaction();
   try {
     const { friendId, groupname } = req.body;
     const group = await Group.findOne({ where: { groupname } });
 
     const admin = await Usergroup.update(
       { isAdmin: true },
-      { where: { userId: friendId, groupId: group.id } }
+      { where: { userId: friendId, groupId: group.id } },
+      { transaction: t }
     );
 
+    await t.commit();
     res.status(200).json({
       message: `${admin.name} is Successfully made admin`,
     });
   } catch (err) {
     res.status(500).json({ message: "admin friend problem" });
+    await t.rollback();
   }
 };
 

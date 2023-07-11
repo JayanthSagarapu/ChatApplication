@@ -4,23 +4,29 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const signUp = async (req, res) => {
+  const t = await sequelize.transaction();
   try {
     const { username, email, phone, password } = req.body;
 
     const saltrounds = 10;
     bcrypt.hash(password, saltrounds, async (err, hash) => {
-      const user = await User.create({
-        username,
-        email,
-        phone,
-        password: hash,
-      });
+      const user = await User.create(
+        {
+          username,
+          email,
+          phone,
+          password: hash,
+        },
+        { transaction: t }
+      );
       res.status(200).json({
         message: "SuccessFully Created new user",
       });
+      await t.commit();
     });
   } catch (err) {
     res.status(500).json(err);
+    await t.rollback();
   }
 };
 
