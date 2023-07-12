@@ -63,54 +63,52 @@ addEventListener("DOMContentLoaded", async () => {
   const groupname = localStorage.getItem("groupname");
   headingh4a.innerHTML = `Group Name : ${groupname}`;
 
-  setInterval(async () => {
-    const decodeJwt = parseJwt(token);
-    console.log("decodeJwt", decodeJwt);
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/groupchat/getmessages/${groupname}`,
-        {
-          headers: { Authorization: token },
-        },
-        groupname
-      );
+  const decodeJwt = parseJwt(token);
+  console.log("decodeJwt", decodeJwt);
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/groupchat/getmessages/${groupname}`,
+      {
+        headers: { Authorization: token },
+      },
+      groupname
+    );
 
-      console.log(response.data);
+    console.log(response.data);
 
-      if (response.data.usergroup[0].isAdmin === false) {
-        document.getElementById("addfriendBtn").style.visibility = "hidden";
-      }
-
-      let array = [];
-
-      if (response.data.chat.length > 10) {
-        let n = response.data.chat.length - 1;
-
-        while (array.length < 10) {
-          array.push(response.data.chat[n]);
-          n--;
-        }
-      } else {
-        array = response.data.chat.reverse();
-      }
-
-      array = array.reverse();
-
-      localStorage.setItem("oldmsgsArray", JSON.stringify(array));
-
-      let chat = JSON.parse(localStorage.getItem("oldmsgsArray"));
-      // document.getElementById("message-container").innerText = " ";
-
-      chat.forEach((ele) => {
-        if (ele.userid === decodeJwt.userid) {
-          ele.username = "you";
-        }
-        showMessageOnScreen(ele);
-      });
-    } catch (err) {
-      console.log(err);
+    if (response.data.usergroup[0].isAdmin === false) {
+      document.getElementById("addfriendBtn").style.visibility = "hidden";
     }
-  }, 1000);
+
+    let array = [];
+
+    if (response.data.chat.length > 10) {
+      let n = response.data.chat.length - 1;
+
+      while (array.length < 10) {
+        array.push(response.data.chat[n]);
+        n--;
+      }
+    } else {
+      array = response.data.chat.reverse();
+    }
+
+    array = array.reverse();
+
+    localStorage.setItem("oldmsgsArray", JSON.stringify(array));
+
+    let chat = JSON.parse(localStorage.getItem("oldmsgsArray"));
+    // document.getElementById("message-container").innerText = " ";
+
+    chat.forEach((ele) => {
+      if (ele.userId === decodeJwt.userId) {
+        ele.username = "you";
+      }
+      showMessageOnScreen(ele);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 function showMessageOnScreen(response) {
@@ -159,18 +157,35 @@ async function showFriends() {
 }
 
 function showAdminUsers(data) {
+  const token = localStorage.getItem("token");
   data.friends.forEach((friend) => {
     const ul = document.getElementById("friends-list");
     const li = document.createElement("li");
-    li.textContent = friend.name;
     li.id = friend.userId;
     li.className = "text-white mb-2";
     li.style =
-      "list-decoration : none;padding:5px; background-color:rgb(46, 71, 109)";
+      "list-decoration : none ; padding:5px; background-color:rgb(46, 71, 109); display:flex; flex-direction:row;";
+
+    const name = document.createElement("div");
+    name.textContent = friend.name;
+    name.style = "width:73px; background-color:transparent,";
+    li.append(name);
+
+    if (friend.isAdmin === false) {
+      const adminbtn = document.createElement("button");
+      showadminbtn(adminbtn, friend);
+
+      li.appendChild(adminbtn);
+    } else {
+      const rmvadminbtn = document.createElement("button");
+      removeadminBtn(rmvadminbtn, friend);
+
+      li.appendChild(rmvadminbtn);
+    }
 
     const remvebtn = document.createElement("button");
-    remvebtn.textContent = "remove";
-    remvebtn.className = "float-right text-white ml-1";
+    remvebtn.textContent = "Remove";
+    remvebtn.className = "float-right text-white ml-0";
     remvebtn.style = "background-color: rgb(4, 4, 36)";
 
     remvebtn.onclick = async (e) => {
@@ -194,42 +209,76 @@ function showAdminUsers(data) {
     };
     li.appendChild(remvebtn);
 
-    if (friend.isAdmin === false) {
-      const adminbtn = document.createElement("button");
-      adminbtn.textContent = "Admin";
-      adminbtn.className = "float-right text-white";
-      adminbtn.style = "background-color: rgb(4, 4, 36)";
-
-      adminbtn.onclick = async (e) => {
-        e.preventDefault();
-        try {
-          const friendname = e.target.parentElement.firstChild.textContent;
-          const groupname = localStorage.getItem("groupname");
-
-          const obj = {
-            friendname,
-            groupname,
-          };
-
-          const admin = await axios.post(
-            `http://localhost:3000/groupchat/adminfriend`,
-            obj,
-            {
-              headers: { Authorization: token },
-            }
-          );
-
-          console.log(admin.data);
-        } catch (err) {
-          console.log(err);
-        }
-      };
-
-      li.appendChild(adminbtn);
-    }
-
     ul.appendChild(li);
   });
+}
+
+async function showadminbtn(adminbtn, friend) {
+  adminbtn.textContent = "Admin";
+  adminbtn.className = "float-right text-white";
+  adminbtn.style = "background-color: rgb(4, 4, 36);margin-left:30%";
+
+  adminbtn.onclick = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      // const friendname = e.target.parentElement.firstChild.textContent;
+      const friendId = friend.userId;
+      const groupname = localStorage.getItem("groupname");
+
+      const obj = {
+        friendId,
+        groupname,
+      };
+
+      const admin = await axios.post(
+        `http://localhost:3000/groupchat/adminfriend`,
+        obj,
+        {
+          headers: { Authorization: token },
+        }
+      );
+      adminbtn.textContent = "RemoveAdmin";
+      removeadminBtn(adminbtn, friend);
+      console.log(admin.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+}
+
+async function removeadminBtn(rmvadminbtn, friend) {
+  rmvadminbtn.textContent = "RemoveAdmin";
+  rmvadminbtn.className = "float-right text-white";
+  rmvadminbtn.style = "background-color: rgb(4, 4, 36)";
+
+  rmvadminbtn.onclick = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      // const friendname = e.target.parentElement.firstChild.textContent;
+      const friendId = friend.userId;
+      const groupname = localStorage.getItem("groupname");
+
+      const obj = {
+        friendId,
+        groupname,
+      };
+
+      const rmvadmin = await axios.post(
+        `http://localhost:3000/groupchat/rmvadmin`,
+        obj,
+        {
+          headers: { Authorization: token },
+        }
+      );
+      rmvadminbtn.textContent = "Admin";
+      showadminbtn(rmvadminbtn, friend);
+      console.log(rmvadmin.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
 
 function showNONAdminUsers(data) {
@@ -243,4 +292,8 @@ function showNONAdminUsers(data) {
       "list-decoration : none; text-align:center;padding:5px; background-color:rgb(46, 71, 109)";
     ul.appendChild(li);
   });
+}
+
+function closefriendslist() {
+  document.getElementById("friends-container").style.display = "none";
 }

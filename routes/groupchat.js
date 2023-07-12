@@ -20,8 +20,10 @@ router.get(
   Groupchat.showfriends
 );
 
-router.delete("/deletefriend/:friendname/:groupname", Groupchat.removefriend);
+router.delete("/deletefriend/:friendId/:groupname", Groupchat.removefriend);
 
 router.post("/adminfriend", Groupchat.adminfriend);
+
+router.post("/rmvadmin", Groupchat.rmvadmin);
 
 module.exports = router;

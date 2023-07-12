@@ -77,17 +77,13 @@ const removefriend = async (req, res) => {
   try {
     const { friendId, groupname } = req.params;
     const group = await Group.findOne({ where: { groupname } });
-    const friend = await Usergroup.findOne({
+    const friend = await Usergroup.destroy({
       where: { groupId: group.id, userId: friendId },
     });
-
-    if (friend) {
-      await friend.destroy();
-      await t.commit();
-      res.status(200).json({
-        message: "Successfully deleted friend",
-      });
-    }
+    await t.commit();
+    res.status(200).json({
+      message: "Successfully deleted friend",
+    });
   } catch (err) {
     res.status(500).json({ message: "Delete friend problem" });
     await t.rollback();
@@ -99,6 +95,7 @@ const adminfriend = async (req, res) => {
   try {
     const { friendId, groupname } = req.body;
     const group = await Group.findOne({ where: { groupname } });
+    // const friend = await User.findOne({ where: { email: friendname } });
 
     const admin = await Usergroup.update(
       { isAdmin: true },
@@ -108,10 +105,33 @@ const adminfriend = async (req, res) => {
 
     await t.commit();
     res.status(200).json({
-      message: `${admin.name} is Successfully made admin`,
+      message: `is Successfully made admin`,
     });
   } catch (err) {
     res.status(500).json({ message: "admin friend problem" });
+    await t.rollback();
+  }
+};
+
+const rmvadmin = async (req, res) => {
+  const t = await sequelize.transaction();
+  try {
+    const { friendId, groupname } = req.body;
+    const group = await Group.findOne({ where: { groupname } });
+    // const friend = await User.findOne({ where: { email: friendname } });
+
+    const rmvadmin = await Usergroup.update(
+      { isAdmin: false },
+      { where: { userId: friendId, groupId: group.id } },
+      { transaction: t }
+    );
+
+    await t.commit();
+    res.status(200).json({
+      message: `removed admin`,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "rmvadmin friend problem" });
     await t.rollback();
   }
 };
@@ -123,4 +143,5 @@ module.exports = {
   showfriends,
   removefriend,
   adminfriend,
+  rmvadmin,
 };

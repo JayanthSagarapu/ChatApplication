@@ -111,7 +111,7 @@
       type="button"
       style="
         width: 15%;
-        margin-left: 75%;
+        margin-left: 80%;
         background: #4caf50;
         padding: 8px;
         color: white;
@@ -166,6 +166,7 @@
           margin-left: 5%;
         "
       ></div>
+
       <div
         class="friends-container"
         id="friends-container"
@@ -177,6 +178,13 @@
           display: none;
         "
       >
+        <button
+          onclick="closefriendslist()"
+          style="background-color: rgb(192, 76, 76); float: right"
+        >
+          X
+        </button>
+
         <ul
           id="friends-list"
           style="
@@ -184,6 +192,7 @@
             flex-direction: column;
             padding: 10px;
             overflow: scroll;
+            margin-top: 30px;
           "
         ></ul>
       </div>
