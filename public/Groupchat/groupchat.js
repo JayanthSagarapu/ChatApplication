@@ -63,52 +63,54 @@ addEventListener("DOMContentLoaded", async () => {
   const groupname = localStorage.getItem("groupname");
   headingh4a.innerHTML = `Group Name : ${groupname}`;
 
-  const decodeJwt = parseJwt(token);
-  console.log("decodeJwt", decodeJwt);
-  try {
-    const response = await axios.get(
-      `http://16.171.175.107:3000/groupchat/getmessages/${groupname}`,
-      {
-        headers: { Authorization: token },
-      },
-      groupname
-    );
+  setInterval(async () => {
+    const decodeJwt = parseJwt(token);
+    console.log("decodeJwt", decodeJwt);
+    try {
+      const response = await axios.get(
+        `http://16.171.175.107:3000/groupchat/getmessages/${groupname}`,
+        {
+          headers: { Authorization: token },
+        },
+        groupname
+      );
 
-    console.log(response.data);
+      console.log(response.data);
 
-    if (response.data.usergroup[0].isAdmin === false) {
-      document.getElementById("addfriendBtn").style.visibility = "hidden";
-    }
-
-    let array = [];
-
-    if (response.data.chat.length > 10) {
-      let n = response.data.chat.length - 1;
-
-      while (array.length < 10) {
-        array.push(response.data.chat[n]);
-        n--;
+      if (response.data.usergroup[0].isAdmin === false) {
+        document.getElementById("addfriendBtn").style.visibility = "hidden";
       }
-    } else {
-      array = response.data.chat.reverse();
-    }
 
-    array = array.reverse();
+      let array = [];
 
-    localStorage.setItem("oldmsgsArray", JSON.stringify(array));
+      if (response.data.chat.length > 10) {
+        let n = response.data.chat.length - 1;
 
-    let chat = JSON.parse(localStorage.getItem("oldmsgsArray"));
-    // document.getElementById("message-container").innerText = " ";
-
-    chat.forEach((ele) => {
-      if (ele.userId === decodeJwt.userId) {
-        ele.username = "you";
+        while (array.length < 10) {
+          array.push(response.data.chat[n]);
+          n--;
+        }
+      } else {
+        array = response.data.chat.reverse();
       }
-      showMessageOnScreen(ele);
-    });
-  } catch (err) {
-    console.log(err);
-  }
+
+      array = array.reverse();
+
+      localStorage.setItem("oldmsgsArray", JSON.stringify(array));
+
+      let chat = JSON.parse(localStorage.getItem("oldmsgsArray"));
+      // document.getElementById("message-container").innerText = " ";
+
+      chat.forEach((ele) => {
+        if (ele.userId === decodeJwt.userId) {
+          ele.username = "you";
+        }
+        showMessageOnScreen(ele);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }, 1000);
 });
 
 function showMessageOnScreen(response) {
