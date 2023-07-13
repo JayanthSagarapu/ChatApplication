@@ -1,3 +1,14 @@
+const socket = io("http://localhost:3000/");
+
+socket.on("connect", () => {
+  console.log(socket.id);
+});
+
+socket.on("receive", (message) => {
+  console.log("message:", message);
+  showMessageOnScreen(message);
+});
+
 async function sendMessage(e) {
   try {
     e.preventDefault();
@@ -11,16 +22,27 @@ async function sendMessage(e) {
     };
 
     const response = await axios.post(
-      "http://16.171.175.107:3000/groupchat/sendmessage",
+      "http://localhost:3000/groupchat/sendmessage",
       obj,
       { headers: { Authorization: token } }
     );
-    response.data.chatDetails.username = "you";
-    console.log(response.data.chatDetails);
 
-    showMessageOnScreen(response.data.chatDetails);
+    // response.data.chatDetails.username = "you";
+    // console.log(response.data.chatDetails);
+
+    // showMessageOnScreen(response.data.chatDetails);
+
+    const username = response.data.chatDetails.username;
+
+    const obj2 = {
+      message,
+      username,
+    };
+
+    socket.emit("send-message", obj2);
+
     document.getElementById("message-field").value = "";
-    location.reload();
+    // location.reload();
   } catch (err) {
     console.log(err);
   }
@@ -46,7 +68,7 @@ addEventListener("DOMContentLoaded", async () => {
 
   const dropdown = document.getElementById("groups");
   const groups = await axios.get(
-    "http://16.171.175.107:3000/groupchat/showall-groups",
+    "http://localhost:3000/groupchat/showall-groups",
     {
       headers: { Authorization: token },
     }
@@ -63,54 +85,54 @@ addEventListener("DOMContentLoaded", async () => {
   const groupname = localStorage.getItem("groupname");
   headingh4a.innerHTML = `Group Name : ${groupname}`;
 
-  setInterval(async () => {
-    const decodeJwt = parseJwt(token);
-    console.log("decodeJwt", decodeJwt);
-    try {
-      const response = await axios.get(
-        `http://16.171.175.107:3000/groupchat/getmessages/${groupname}`,
-        {
-          headers: { Authorization: token },
-        },
-        groupname
-      );
+  // setInterval(async () => {
+  const decodeJwt = parseJwt(token);
+  console.log("decodeJwt", decodeJwt);
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/groupchat/getmessages/${groupname}`,
+      {
+        headers: { Authorization: token },
+      },
+      groupname
+    );
 
-      console.log(response.data);
+    console.log(response.data);
 
-      if (response.data.usergroup[0].isAdmin === false) {
-        document.getElementById("addfriendBtn").style.visibility = "hidden";
-      }
-
-      let array = [];
-
-      if (response.data.chat.length > 10) {
-        let n = response.data.chat.length - 1;
-
-        while (array.length < 10) {
-          array.push(response.data.chat[n]);
-          n--;
-        }
-      } else {
-        array = response.data.chat.reverse();
-      }
-
-      array = array.reverse();
-
-      localStorage.setItem("oldmsgsArray", JSON.stringify(array));
-
-      let chat = JSON.parse(localStorage.getItem("oldmsgsArray"));
-      document.getElementById("message-container").innerText = " ";
-
-      chat.forEach((ele) => {
-        if (ele.userId === decodeJwt.userId) {
-          ele.username = "you";
-        }
-        showMessageOnScreen(ele);
-      });
-    } catch (err) {
-      console.log(err);
+    if (response.data.usergroup[0].isAdmin === false) {
+      document.getElementById("addfriendBtn").style.visibility = "hidden";
     }
-  }, 1000);
+
+    let array = [];
+
+    if (response.data.chat.length > 10) {
+      let n = response.data.chat.length - 1;
+
+      while (array.length < 10) {
+        array.push(response.data.chat[n]);
+        n--;
+      }
+    } else {
+      array = response.data.chat.reverse();
+    }
+
+    array = array.reverse();
+
+    localStorage.setItem("oldmsgsArray", JSON.stringify(array));
+
+    let chat = JSON.parse(localStorage.getItem("oldmsgsArray"));
+    document.getElementById("message-container").innerText = " ";
+
+    chat.forEach((ele) => {
+      if (ele.userId === decodeJwt.userId) {
+        ele.username = "you";
+      }
+      showMessageOnScreen(ele);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+  // }, 1000);
 });
 
 function showMessageOnScreen(response) {
@@ -142,7 +164,7 @@ async function showFriends() {
   const groupname = localStorage.getItem("groupname");
 
   const friends = await axios.get(
-    `http://16.171.175.107:3000/groupchat/friends/${groupname}`,
+    `http://localhost:3000/groupchat/friends/${groupname}`,
     { headers: { Authorization: token } },
     groupname
   );
@@ -197,7 +219,7 @@ function showAdminUsers(data) {
         const groupname = localStorage.getItem("groupname");
 
         await axios.delete(
-          `http://16.171.175.107:3000/groupchat/deletefriend/${friendId}/${groupname}`,
+          `http://localhost:3000/groupchat/deletefriend/${friendId}/${groupname}`,
           {
             headers: { Authorization: token },
           }
@@ -234,7 +256,7 @@ async function showadminbtn(adminbtn, friend) {
       };
 
       const admin = await axios.post(
-        `http://16.171.175.107:3000/groupchat/adminfriend`,
+        `http://localhost:3000/groupchat/adminfriend`,
         obj,
         {
           headers: { Authorization: token },
@@ -268,7 +290,7 @@ async function removeadminBtn(rmvadminbtn, friend) {
       };
 
       const rmvadmin = await axios.post(
-        `http://16.171.175.107:3000/groupchat/rmvadmin`,
+        `http://localhost:3000/groupchat/rmvadmin`,
         obj,
         {
           headers: { Authorization: token },

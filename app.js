@@ -32,6 +32,27 @@ app.use("/chat", chatRoutes);
 app.use("/group", groupcontrollerRoutes);
 app.use("/groupchat", groupchatRoutes);
 
+const http = require("http");
+const server = http.createServer(app);
+
+const socketio = require("socket.io");
+const io = socketio(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  socket.on("send-message", (message) => {
+    console.log("message:", message);
+    io.emit("receive", message);
+  });
+
+  socket.on("group-message", (message) => {
+    console.log("message:", message);
+    io.emit("receive", message);
+  });
+});
 app.use((req, res) => {
   console.log("ur;", req.url);
   res.sendFile(path.join(__dirname, `public/${req.url}`));
@@ -50,7 +71,8 @@ sequelize
   // .sync({ force: true })
   .sync()
   .then(() => {
-    app.listen(3000);
+    // app.listen(3000);
+    server.listen(3000);
   })
   .catch((err) => {
     console.log(err);

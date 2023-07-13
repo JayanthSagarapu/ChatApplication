@@ -12,7 +12,7 @@ async function addfriend(e) {
     };
 
     const response = await axios.post(
-      "http://16.171.175.107:3000/group/addfriend",
+      "http://localhost:3000/group/addfriend",
       obj,
       { headers: { Authorization: token } }
     );

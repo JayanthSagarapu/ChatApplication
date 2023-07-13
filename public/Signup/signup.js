@@ -27,7 +27,7 @@ async function signUp(event) {
 
     if (username && email && phone && password) {
       const response = await axios.post(
-        "http://16.171.175.107:3000/user/signup",
+        "http://localhost:3000/user/signup",
         obj
       );
       console.log(response);
