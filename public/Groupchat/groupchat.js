@@ -128,6 +128,46 @@ addEventListener("DOMContentLoaded", async () => {
       }
       showMessageOnScreen(ele);
     });
+
+    const formFile = document.getElementById("formElem");
+    formFile.addEventListener("submit", onsubmitfile);
+
+    async function onsubmitfile(event) {
+      try {
+        event.preventDefault();
+        const groupname = localStorage.getItem("groupname");
+
+        formData = new FormData(formFile);
+
+        const token = localStorage.getItem("token");
+
+        console.log("formData", formData);
+
+        const response = await axios.post(
+          `http://16.171.175.107:3000/file/sendfile/${groupname}`,
+          formData,
+          {
+            headers: {
+              Authorization: token,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        const username = response.data.username;
+        const obj2 = {
+          formData,
+          username,
+        };
+
+        socket.emit("send-message", obj2);
+
+        console.log(response.data);
+        document.getElementById("sendFile").value = null;
+        window.location.reload;
+      } catch (error) {
+        console.log(error);
+      }
+    }
   } catch (err) {
     console.log(err);
   }
@@ -321,43 +361,43 @@ function closefriendslist() {
   document.getElementById("friends-container").style.display = "none";
 }
 
-const formFile = document.getElementById("formElem");
-formFile.addEventListener("submit", onsubmitfile);
+// const formFile = document.getElementById("formElem");
+// formFile.addEventListener("submit", onsubmitfile);
 
-async function onsubmitfile(event) {
-  try {
-    event.preventDefault();
-    const groupname = localStorage.getItem("groupname");
+// async function onsubmitfile(event) {
+//   try {
+//     event.preventDefault();
+//     const groupname = localStorage.getItem("groupname");
 
-    formData = new FormData(formFile);
+//     formData = new FormData(formFile);
 
-    const token = localStorage.getItem("token");
+//     const token = localStorage.getItem("token");
 
-    console.log("formData>>>>>>>>>>", formData);
+//     console.log("formData>>>>>>>>>>", formData);
 
-    const response = await axios.post(
-      `http://16.171.175.107:3000/file/sendfile/${groupname}`,
-      formData,
-      {
-        headers: {
-          Authorization: token,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    const username = response.data.username;
-    const obj2 = {
-      formData,
-      username,
-    };
+//     const response = await axios.post(
+//       `http://16.171.175.107:3000/file/sendfile/${groupname}`,
+//       formData,
+//       {
+//         headers: {
+//           Authorization: token,
+//           "Content-Type": "multipart/form-data",
+//         },
+//       }
+//     );
+//     const username = response.data.username;
+//     const obj2 = {
+//       formData,
+//       username,
+//     };
 
-    socket.emit("send-message", obj2);
+//     socket.emit("send-message", obj2);
 
-    console.log(response.data);
-    document.getElementById("sendFile").value = null;
-    window.location.reload;
-    //showMyMessageOnScreen(responce.data.data);
-  } catch (error) {
-    console.log(error);
-  }
-}
+//     console.log(response.data);
+//     document.getElementById("sendFile").value = null;
+//     window.location.reload;
+//     //showMyMessageOnScreen(responce.data.data);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
