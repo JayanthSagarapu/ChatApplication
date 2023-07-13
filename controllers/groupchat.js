@@ -7,7 +7,8 @@ const sequelize = require("../util/database");
 const sendMessage = async (req, res) => {
   const t = await sequelize.transaction();
   try {
-    const { message, groupname } = req.body;
+    const { message } = req.body;
+    const groupname = req.params.groupname;
     const group = await Group.findOne({ where: { groupname } });
     const chatDetails = await Chat.create(
       {

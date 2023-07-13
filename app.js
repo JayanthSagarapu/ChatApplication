@@ -21,6 +21,7 @@ const userRoutes = require("./routes/user");
 const chatRoutes = require("./routes/chat");
 const groupchatRoutes = require("./routes/groupchat");
 const groupcontrollerRoutes = require("./routes/groupcontroller");
+const multimediaRoutes = require("./routes/multimedia");
 
 const User = require("./models/UserDb");
 const Chat = require("./models/Chat");
@@ -31,6 +32,7 @@ app.use("/user", userRoutes);
 app.use("/chat", chatRoutes);
 app.use("/group", groupcontrollerRoutes);
 app.use("/groupchat", groupchatRoutes);
+app.use("/file", multimediaRoutes);
 
 const http = require("http");
 const server = http.createServer(app);

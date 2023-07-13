@@ -28,7 +28,7 @@
       .container {
         display: flex;
         flex-direction: column;
-        height: 28rem;
+        height: 26rem;
         max-width: 100rem;
         margin: 0 auto;
         padding: 20px;
@@ -44,6 +44,7 @@
 
       .message {
         background-color: rgb(201, 217, 236);
+        overflow-wrap: break-wordf;
         padding: 10px;
         border-radius: 5px;
         margin-bottom: 2px;
@@ -197,14 +198,39 @@
         ></ul>
       </div>
     </div>
-    <div class="input-container">
-      <input
-        id="message-field"
-        class="input-field"
-        type="text"
-        placeholder="Type your message"
-      />
-      <button onclick="sendMessage(event)" class="send-button">Send</button>
+    <div class="input-container display-flex flex-column">
+      <div style="display: block; width: 85%; margin-bottom: 5px">
+        <form id="formElem">
+          <input
+            type="file"
+            name="file"
+            id="sendFile"
+            style="margin-left: 40%"
+          />
+          <button
+            style="
+              height: 40px;
+              margin-left: 4px;
+              padding: 3px;
+              width: 85px;
+              background-color: #4caf50;
+            "
+            type="submit"
+            class="btn text-white"
+          >
+            Send File
+          </button>
+        </form>
+      </div>
+      <div style="display: block">
+        <input
+          id="message-field"
+          class="input-field"
+          type="text"
+          placeholder="Type your message"
+        />
+        <button onclick="sendMessage(event)" class="send-button">Send</button>
+      </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.1/socket.io.js"></script>
     <script src="/socket.io/socket.io.js"></script>

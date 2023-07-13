@@ -4,7 +4,11 @@ const router = express.Router();
 const Groupchat = require("../controllers/groupchat");
 const middleware = require("../middleware/auth");
 
-router.post("/sendmessage", middleware.authenticate, Groupchat.sendMessage);
+router.post(
+  "/sendmessage/:groupname",
+  middleware.authenticate,
+  Groupchat.sendMessage
+);
 
 router.get(
   "/getmessages/:groupname",

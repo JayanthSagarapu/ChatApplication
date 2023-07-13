@@ -1,7 +1,7 @@
 const socket = io("http://16.171.175.107:3000/");
 
 socket.on("connect", () => {
-  console.log(socket.id);
+  // console.log(socket.id);
 });
 
 socket.on("receive", (message) => {
@@ -18,11 +18,10 @@ async function sendMessage(e) {
 
     const obj = {
       message,
-      groupname,
     };
 
     const response = await axios.post(
-      "http://16.171.175.107:3000/groupchat/sendmessage",
+      `http://16.171.175.107:3000/groupchat/sendmessage/${groupname}`,
       obj,
       { headers: { Authorization: token } }
     );
@@ -87,7 +86,7 @@ addEventListener("DOMContentLoaded", async () => {
 
   // setInterval(async () => {
   const decodeJwt = parseJwt(token);
-  console.log("decodeJwt", decodeJwt);
+  // console.log("decodeJwt", decodeJwt);
   try {
     const response = await axios.get(
       `http://16.171.175.107:3000/groupchat/getmessages/${groupname}`,
@@ -97,7 +96,7 @@ addEventListener("DOMContentLoaded", async () => {
       groupname
     );
 
-    console.log(response.data);
+    // console.log(response.data);
 
     if (response.data.usergroup[0].isAdmin === false) {
       document.getElementById("addfriendBtn").style.visibility = "hidden";
@@ -320,4 +319,45 @@ function showNONAdminUsers(data) {
 
 function closefriendslist() {
   document.getElementById("friends-container").style.display = "none";
+}
+
+const formFile = document.getElementById("formElem");
+formFile.addEventListener("submit", onsubmitfile);
+
+async function onsubmitfile(event) {
+  try {
+    event.preventDefault();
+    const groupname = localStorage.getItem("groupname");
+
+    formData = new FormData(formFile);
+
+    const token = localStorage.getItem("token");
+
+    console.log("formData>>>>>>>>>>", formData);
+
+    const response = await axios.post(
+      `http://16.171.175.107:3000/file/sendfile/${groupname}`,
+      formData,
+      {
+        headers: {
+          Authorization: token,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    const username = response.data.username;
+    const obj2 = {
+      formData,
+      username,
+    };
+
+    socket.emit("send-message", obj2);
+
+    console.log(response.data);
+    document.getElementById("sendFile").value = null;
+    window.location.reload;
+    //showMyMessageOnScreen(responce.data.data);
+  } catch (error) {
+    console.log(error);
+  }
 }
