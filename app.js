@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const app = express();
 const dotenv = require("dotenv");
 dotenv.config();
@@ -30,6 +31,11 @@ app.use("/user", userRoutes);
 app.use("/chat", chatRoutes);
 app.use("/group", groupcontrollerRoutes);
 app.use("/groupchat", groupchatRoutes);
+
+app.use((req, res) => {
+  console.log("ur;", req.url);
+  res.sendFile(path.join(__dirname, `public/${req.url}`));
+});
 
 User.hasMany(Chat);
 Chat.belongsTo(User);

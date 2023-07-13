@@ -10,7 +10,7 @@ async function creategroup(e) {
     };
 
     const response = await axios.post(
-      "http://localhost:3000/group/creategroup",
+      "http://16.171.175.107:3000/group/creategroup",
       obj,
       { headers: { Authorization: token } }
     );
