@@ -19,7 +19,7 @@ addEventListener("DOMContentLoaded", async () => {
     const groupcontainer = document.getElementById("user-groups");
 
     const groups = await axios.get(
-      "http://16.171.175.10:3000/chat/showall-groups",
+      "http://16.171.175.107:3000/chat/showall-groups",
       {
         headers: { Authorization: token },
       }
@@ -74,7 +74,7 @@ function showcreateGroup() {
 //     };
 
 //     const response = await axios.post(
-//       "http://16.171.175.10:3000/group/creategroup",
+//       "http://16.171.175.107:3000/group/creategroup",
 //       obj,
 //       { headers: { Authorization: token } }
 //     );
