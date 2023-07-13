@@ -1,4 +1,4 @@
-const socket = io("http://localhost:3000/");
+const socket = io("http://16.171.175.107:3000/");
 
 socket.on("connect", () => {
   console.log(socket.id);
@@ -22,7 +22,7 @@ async function sendMessage(e) {
     };
 
     const response = await axios.post(
-      "http://localhost:3000/groupchat/sendmessage",
+      "http://16.171.175.107:3000/groupchat/sendmessage",
       obj,
       { headers: { Authorization: token } }
     );
@@ -68,7 +68,7 @@ addEventListener("DOMContentLoaded", async () => {
 
   const dropdown = document.getElementById("groups");
   const groups = await axios.get(
-    "http://localhost:3000/groupchat/showall-groups",
+    "http://16.171.175.107:3000/groupchat/showall-groups",
     {
       headers: { Authorization: token },
     }
@@ -90,7 +90,7 @@ addEventListener("DOMContentLoaded", async () => {
   console.log("decodeJwt", decodeJwt);
   try {
     const response = await axios.get(
-      `http://localhost:3000/groupchat/getmessages/${groupname}`,
+      `http://16.171.175.107:3000/groupchat/getmessages/${groupname}`,
       {
         headers: { Authorization: token },
       },
@@ -164,7 +164,7 @@ async function showFriends() {
   const groupname = localStorage.getItem("groupname");
 
   const friends = await axios.get(
-    `http://localhost:3000/groupchat/friends/${groupname}`,
+    `http://16.171.175.107:3000/groupchat/friends/${groupname}`,
     { headers: { Authorization: token } },
     groupname
   );
@@ -219,7 +219,7 @@ function showAdminUsers(data) {
         const groupname = localStorage.getItem("groupname");
 
         await axios.delete(
-          `http://localhost:3000/groupchat/deletefriend/${friendId}/${groupname}`,
+          `http://16.171.175.107:3000/groupchat/deletefriend/${friendId}/${groupname}`,
           {
             headers: { Authorization: token },
           }
@@ -256,7 +256,7 @@ async function showadminbtn(adminbtn, friend) {
       };
 
       const admin = await axios.post(
-        `http://localhost:3000/groupchat/adminfriend`,
+        `http://16.171.175.107:3000/groupchat/adminfriend`,
         obj,
         {
           headers: { Authorization: token },
@@ -290,7 +290,7 @@ async function removeadminBtn(rmvadminbtn, friend) {
       };
 
       const rmvadmin = await axios.post(
-        `http://localhost:3000/groupchat/rmvadmin`,
+        `http://16.171.175.107:3000/groupchat/rmvadmin`,
         obj,
         {
           headers: { Authorization: token },
