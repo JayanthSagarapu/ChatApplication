@@ -346,7 +346,7 @@ async function onsubmitfile(event) {
       }
     );
 
-    const username = req.user.username;
+    const username = response.data.username;
     const obj2 = {
       formData,
       username,

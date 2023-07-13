@@ -36,7 +36,7 @@ const sendFile = async (req, res, next) => {
     await t.commit();
     res
       .status(201)
-      .json({ message: "data send succesfully", username: req.user.name });
+      .json({ message: "data send succesfully", username: req.user.username });
   } catch (err) {
     console.log(err);
     await t.rollback();
