@@ -99,7 +99,7 @@ addEventListener("DOMContentLoaded", async () => {
       localStorage.setItem("oldmsgsArray", JSON.stringify(array));
 
       let chat = JSON.parse(localStorage.getItem("oldmsgsArray"));
-      // document.getElementById("message-container").innerText = " ";
+      document.getElementById("message-container").innerText = " ";
 
       chat.forEach((ele) => {
         if (ele.userId === decodeJwt.userId) {
