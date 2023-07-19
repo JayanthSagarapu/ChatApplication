@@ -346,17 +346,17 @@ async function onsubmitfile(event) {
       }
     );
 
-    const username = response.data.username;
-    const obj2 = {
-      formData,
-      username,
-    };
+    // const username = response.data.username;
+    // const obj2 = {
+    //   formData,
+    //   username,
+    // };
 
-    socket.emit("send-message", obj2);
+    // socket.emit("send-message", obj2);
 
     console.log(response.data);
     document.getElementById("sendFile").value = null;
-    window.location.reload;
+    location.reload();
     //showMyMessageOnScreen(responce.data.data);
   } catch (error) {
     console.log(error);

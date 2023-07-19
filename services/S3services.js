@@ -14,7 +14,7 @@ exports.uploadToS3 = (file, filename) => {
     Bucket: BUCKET_NAME,
     Key: filename,
     Body: file,
-    ACL: "public-read",
+    ACL: "public-read", // Access Control List
   };
 
   return new Promise((resolve, reject) => {
