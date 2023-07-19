@@ -52,12 +52,8 @@ io.on("connection", (socket) => {
     console.log("message:", message);
     io.emit("receive", message);
   });
-
-  socket.on("group-message", (message) => {
-    console.log("message:", message);
-    io.emit("receive", message);
-  });
 });
+
 app.use((req, res) => {
   console.log("ur;", req.url);
   res.sendFile(path.join(__dirname, `public/${req.url}`));
