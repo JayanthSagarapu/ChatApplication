@@ -34,9 +34,6 @@ app.use("/group", groupcontrollerRoutes);
 app.use("/groupchat", groupchatRoutes);
 app.use("/file", multimediaRoutes);
 
-const archiveChat = require("./controllers/archivechatcontroller");
-app.use(archiveChat.job());
-
 const http = require("http");
 const server = http.createServer(app);
 

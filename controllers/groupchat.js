@@ -3,6 +3,8 @@ const User = require("../models/UserDb");
 const Usergroup = require("../models/usergroup");
 const Group = require("../models/group");
 const sequelize = require("../util/database");
+const Cron = require("node-cron");
+const archiveChat = require("../models/archivechat");
 
 const sendMessage = async (req, res) => {
   const t = await sequelize.transaction();
@@ -136,6 +138,31 @@ const rmvadmin = async (req, res) => {
     await t.rollback();
   }
 };
+
+Cron.schedule("0 0 0 * * *", async () => {
+  const t = await sequelize.transaction();
+
+  try {
+    const data = await Chat.findAll();
+    data.forEach(async (element) => {
+      await archiveChat.create(
+        {
+          message: element.message,
+          name: element.username,
+          userId: element.userId,
+          groupId: element.groupId,
+        },
+        { transaction: t }
+      );
+    });
+    await Chat.destroy({ where: {} }, { transaction: t });
+    await t.commit();
+  } catch (err) {
+    await t.rollback();
+
+    console.log(err);
+  }
+});
 
 module.exports = {
   sendMessage,

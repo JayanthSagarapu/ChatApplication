@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/database");
 
-const archived = sequelize.define("archived", {
+const Archived = sequelize.define("archived", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -27,4 +27,4 @@ const archived = sequelize.define("archived", {
   },
 });
 
-module.exports = archived;
+module.exports = Archived;
